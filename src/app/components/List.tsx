@@ -1,5 +1,7 @@
 import React, {useState} from "react";
 import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
+import {Box, Stack} from "@chakra-ui/react";
+import {ListItem} from "./index";
 
 export default function List(): JSX.Element {
 
@@ -80,17 +82,19 @@ export default function List(): JSX.Element {
                         key={columnId}
                     >
                         <h2>{column.name}</h2>
-                        <div style={{margin: 8}}>
+                        <Box display="flex " justifyContent="center" alignItems="center" borderRadius="8" minW="300px" minH="200px"
+                             bgColor="#ffcab0" boxShadow="0px 1px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.06)">
                             <Droppable droppableId={columnId} key={columnId}>
                                 {(provided, snapshot) => {
                                     return (
-                                        <div
+                                        <Stack
+                                            spacing="4"
                                             {...provided.droppableProps}
                                             ref={provided.innerRef}
                                             style={{
                                                 background: snapshot.isDraggingOver
                                                     ? "lightblue"
-                                                    : "lightgrey",
+                                                    : "#ffcab0",
                                                 padding: 4,
                                                 width: 250,
                                                 minHeight: 500
@@ -109,31 +113,20 @@ export default function List(): JSX.Element {
                                                                     ref={provided.innerRef}
                                                                     {...provided.draggableProps}
                                                                     {...provided.dragHandleProps}
-                                                                    style={{
-                                                                        userSelect: "none",
-                                                                        padding: 16,
-                                                                        margin: "0 0 8px 0",
-                                                                        minHeight: "50px",
-                                                                        backgroundColor: snapshot.isDragging
-                                                                            ? "#263B4A"
-                                                                            : "#456C86",
-                                                                        color: "white",
-                                                                        ...provided.draggableProps.style
-                                                                    }}
-                                                                >
-                                                                    {item.content}
-                                                                </div>
+
+                                                               ><ListItem content={item.content} backgroundColor={snapshot.isDragging ? "#263B4A"
+                                                                    : "#456C86"}/></div>
                                                             );
                                                         }}
                                                     </Draggable>
                                                 );
                                             })}
                                             {provided.placeholder}
-                                        </div>
+                                        </Stack>
                                     );
                                 }}
                             </Droppable>
-                        </div>
+                        </Box>
                     </div>
                 );
             })}
