@@ -1,23 +1,13 @@
 import { combineReducers, configureStore, Reducer } from "@reduxjs/toolkit";
-import { persistReducer, persistStore } from "redux-persist";
+import { persistStore } from "redux-persist";
 import { boardSlice, BoardState } from "./board.slice";
-import storage from "redux-persist/lib/storage";
 
 const rootReducer = combineReducers({
-  board: boardSlice as Reducer<BoardState>,
+  boards: boardSlice.reducer,
 });
-const persistConfig = {
-  key: "root",
-  version: 1,
-  storage,
-  whitelist: ["board"], //Things u want to persist
-};
-// @ts-ignore
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
 export const store = configureStore({
   reducer: {
-    reducer: persistedReducer,
+    board: rootReducer,
   },
 });
 
