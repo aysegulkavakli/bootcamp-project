@@ -1,8 +1,7 @@
-import { User, List } from "./index";
-
 export type Board = {
+  id: number;
   title: string;
-  //owner: User;
-  //members: User[];
-  //lists: List[];
+  ownerId: number;
+  createdAt: Date;
+  updatedAt: Date;
 };

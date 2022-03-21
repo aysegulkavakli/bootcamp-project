@@ -1,9 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { HStack, Stack, Text } from "@chakra-ui/react";
-import { AddList } from "../components";
-import BoardList from "../components/BoardList";
+import { AddBoard, BoardCard } from "../components";
+import { AxiosInstance } from "../AxiosClient";
+import { getBoards, setBoard } from "../store/board.slice";
+import { useDispatch, useSelector } from "react-redux";
+import { Board } from "../models";
 
 export default function Dashboard(): JSX.Element {
+  const dispatch = useDispatch();
+  // @ts-ignore
+  const boards: Board[] = useSelector((state: any) => getBoards(state));
+  console.log("boardssss", boards);
+  useEffect(() => {
+    AxiosInstance.get("http://localhost:80/board")
+      .then(function (response) {
+        dispatch(setBoard(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
+
   return (
     <Stack width="100%" height="100%">
       <HStack minW="150px" bgColor="#F2F4F7" justifyContent="center">
@@ -12,8 +29,8 @@ export default function Dashboard(): JSX.Element {
         </Text>
       </HStack>
       <HStack p="8">
-        <BoardList />
-        <AddList />
+        {boards.length > 0 && boards.map((b) => <BoardCard title={b.title} />)}
+        <AddBoard />
       </HStack>
     </Stack>
   );
